@@ -1,4 +1,5 @@
 import { Router as router } from 'express';
+import { authenticate } from '../../middleware';
 
 const { get } = require('./get');
 const { list } = require('./list');
@@ -24,11 +25,11 @@ const { remove } = require('./remove');
 module.exports = models => {
   const api = router();
 
-  api.get('/', list(models));
-  api.get('/:_id', get(models));
-  api.post('/', create(models));
-  api.patch('/:_id', update(models));
-  api.delete('/:_id', remove(models));
+  api.get('/', authenticate, list(models));
+  api.get('/:_id', authenticate, get(models));
+  api.post('/', authenticate, create(models));
+  api.patch('/:_id', authenticate, update(models));
+  api.delete('/:_id', authenticate, remove(models));
 
   return api;
 };

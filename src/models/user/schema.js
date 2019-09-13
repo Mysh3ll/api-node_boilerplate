@@ -1,13 +1,18 @@
 import mongoose from 'mongoose';
 
+import { EMAIL } from '../../utils/regexes';
+
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  username: {
+  email: {
     type: String,
     required: true,
     unique: true,
-    trim: true,
+    validate: {
+      validator: email => EMAIL.test(email),
+      message: 'Field [email] wrong format.',
+    },
   },
 });
 

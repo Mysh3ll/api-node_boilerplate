@@ -19,6 +19,13 @@ const sendResponse = (res, data, status = STATUSES.SUCCESS) =>
     .json(data)
     .end();
 
+const withoutErrors = (next, callback) => (err, updatedTank) => {
+  if (err) {
+    return next(err);
+  }
+  return callback && callback(updatedTank);
+};
+
 const sendOne = curry((res, entity) => {
   if (!entity) {
     throw new NotFoundError();
@@ -40,4 +47,5 @@ module.exports = {
   sendUpdated,
   sendDeleted,
   sendAccepted,
+  withoutErrors,
 };

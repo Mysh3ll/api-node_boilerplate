@@ -1,13 +1,18 @@
 import _ from 'lodash';
-import { sendUpdated } from '../../middleware';
+import { MethodNotAllowed } from 'rest-api-errors';
+
+import { sendUpdated } from '../../middleware/index';
 
 const update = ({ User }) => async (req, res, next) => {
   try {
-    // const userId = req.user.id;
-    const { _id } = req.params;
-    // const user = await User.findOne({_id, userId});
-    const user = await User.findOne({ _id });
-    _.extend(user, req.body);
+    const user = await User.findById(req.user.id);
+    const { email } = req.body;
+    if (!user) {
+      throw new MethodNotAllowed(405, 'Permission denied');
+    }
+    _.extend(user, {
+      email: email,
+    });
 
     await user.save();
     return sendUpdated(res, { user });

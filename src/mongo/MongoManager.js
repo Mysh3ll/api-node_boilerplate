@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { Answer } from '../models/answer';
 import { Question } from '../models/question';
 import { User } from '../models/user';
 
@@ -47,12 +46,14 @@ class MongoManager {
 
   async _initData() {
     const user1 = new User({
-      username: 'michel',
+      email: 'michel@dev.com',
     });
+    await user1.setPassword('123456');
 
     const user2 = new User({
-      username: 'andré',
+      email: 'andre@dev.com',
     });
+    await user2.setPassword('123456');
 
     const question1 = new Question({
       title: 'Question 1',
@@ -86,43 +87,6 @@ class MongoManager {
       createdBy: user2.id,
     });
 
-    const answer1 = new Answer({
-      title: 'Réponse 1',
-      description: 'Description de la réponse 1',
-      questionId: question1.id,
-      createdAt: Date.now(),
-      createdBy: user2.id,
-    });
-
-    const answer2 = new Answer({
-      title: 'Réponse 2',
-      description: 'Description de la réponse 2',
-      questionId: question2.id,
-      createdAt: Date.now(),
-      createdBy: user2.id,
-    });
-
-    const answer3 = new Answer({
-      title: 'Réponse 3',
-      description: 'Description de la réponse 3',
-      questionId: question3.id,
-      createdAt: Date.now(),
-      createdBy: user2.id,
-    });
-
-    const answer4 = new Answer({
-      title: 'Réponse 4',
-      description: 'Description de la réponse 4',
-      questionId: question4.id,
-      createdAt: Date.now(),
-      createdBy: user2.id,
-    });
-
-    await answer1.save();
-    await answer2.save();
-    await answer3.save();
-    await answer4.save();
-
     await question1.save();
     await question2.save();
     await question3.save();
@@ -137,7 +101,7 @@ class MongoManager {
       .connect(this._getMongoUrl(), this._getMongoOptions())
       .then(async () => {
         if (process.env.ERASE_DATABASE_ON_SYNC) {
-          await Promise.all([Answer.deleteMany({}), Question.deleteMany({}), User.deleteMany({})]);
+          await Promise.all([Question.deleteMany({}), User.deleteMany({})]);
 
           await this._initData();
         }
