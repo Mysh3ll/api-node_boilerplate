@@ -15,6 +15,7 @@ const list = ({ Question }) => async (req, res, next) => {
     const questions = await Question.find(query)
       .skip(skip)
       .limit(limit)
+      // .sort('title');
       .sort({ _id: -1 });
 
     return sendList(res, { questions });

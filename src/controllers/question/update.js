@@ -3,10 +3,12 @@ import { sendUpdated } from '../../middleware';
 
 const update = ({ Question }) => async (req, res, next) => {
   try {
-    // const userId = req.user.id;
+    console.log(req.body);
+
+    const userId = req.user.id;
     const { _id } = req.params;
-    // const question = await Question.findOne({_id, userId});
-    const question = await Question.findOne({ _id });
+    const question = await Question.findOne({ _id, createdBy: userId });
+    // const question = await Question.findOne({ _id });
     _.extend(question, req.body);
 
     await question.save();

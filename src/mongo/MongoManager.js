@@ -48,12 +48,12 @@ class MongoManager {
     const user1 = new User({
       email: 'michel@dev.com',
     });
-    await user1.setPassword('123456');
+    await user1.setPassword('Azerty1');
 
     const user2 = new User({
       email: 'andre@dev.com',
     });
-    await user2.setPassword('123456');
+    await user2.setPassword('Azerty1');
 
     const question1 = new Question({
       title: 'Question 1',

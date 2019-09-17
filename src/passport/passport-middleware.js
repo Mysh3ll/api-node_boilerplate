@@ -13,6 +13,7 @@ const generateAccessToken = (req, res, next) => {
   req.token = jwt.sign(
     {
       id: req.user.id,
+      email: req.user.email,
     },
     config.passport.secretAuthToken,
     {

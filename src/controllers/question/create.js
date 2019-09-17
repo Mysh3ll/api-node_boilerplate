@@ -6,10 +6,9 @@ import { sendCreated } from '../../middleware';
 const create = ({ Question }) => async (req, res, next) => {
   try {
     // todo: add user id to Question
-
-    // const userId = req.user.id;
-    // const question = new question({ userId });
-    const question = new Question();
+    const userId = req.user.id;
+    const question = new Question({ createdBy: userId });
+    // const question = new Question();
     if (!req.body.title) {
       throw new NotAcceptable(405, 'Should by title');
     }
