@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { NotAcceptable } from 'rest-api-errors';
+import { websocket } from '../../websocket';
 
 import { sendCreated } from '../../middleware';
 
@@ -15,6 +16,7 @@ const create = ({ Question }) => async (req, res, next) => {
     _.extend(question, req.body);
 
     await question.save();
+    websocket.io.emit('question', question);
     return sendCreated(res, { question });
   } catch (error) {
     next(error);
